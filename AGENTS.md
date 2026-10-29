@@ -53,3 +53,11 @@ Hydrogen's `ShopPayButton` is used as it is.
   counts.
 - Placeholder proof (ratings, reviews, press) stays labelled until real data
   replaces it.
+
+## Brand: Lamplight
+
+This storefront sells the Lamplight Bible study guide and journal. Its design and copy come from the retro-camera `apps/bible-guide`, concept `lamplight` mock store. Its theme lives in `app/app.css`.
+
+- Scripture is quoted from the King James Version only, and every quoted verse shows its reference and translation. Modern translations need the publisher's permission.
+- No invented pastors or clergy. Endorsement slots stay labelled until a real, consenting pastor is confirmed.
+- Authorship is "traditionally attributed to…" and dates are ranges where scholars differ. The larger print size stays "to be confirmed" until the printer confirms it.
