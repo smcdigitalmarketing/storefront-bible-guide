@@ -8,125 +8,219 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-    --font-heading: 'Cormorant Garamond Variable', serif;
-    --font-sans: 'Source Sans 3 Variable', sans-serif;
-    --color-sidebar-ring: var(--sidebar-ring);
-    --color-sidebar-border: var(--sidebar-border);
-    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-    --color-sidebar-accent: var(--sidebar-accent);
-    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-    --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-foreground: var(--sidebar-foreground);
-    --color-sidebar: var(--sidebar);
-    --color-chart-5: var(--chart-5);
-    --color-chart-4: var(--chart-4);
-    --color-chart-3: var(--chart-3);
-    --color-chart-2: var(--chart-2);
-    --color-chart-1: var(--chart-1);
-    --color-ring: var(--ring);
-    --color-input: var(--input);
-    --color-border: var(--border);
-    --color-destructive: var(--destructive);
-    --color-accent-foreground: var(--accent-foreground);
-    --color-accent: var(--accent);
-    --color-muted-foreground: var(--muted-foreground);
-    --color-muted: var(--muted);
-    --color-secondary-foreground: var(--secondary-foreground);
-    --color-secondary: var(--secondary);
-    --color-primary-foreground: var(--primary-foreground);
-    --color-primary: var(--primary);
-    --color-popover-foreground: var(--popover-foreground);
-    --color-popover: var(--popover);
-    --color-card-foreground: var(--card-foreground);
-    --color-card: var(--card);
-    --color-foreground: var(--foreground);
-    --color-background: var(--background);
-    --radius-sm: calc(var(--radius) * 0.6);
-    --radius-md: calc(var(--radius) * 0.8);
-    --radius-lg: var(--radius);
-    --radius-xl: calc(var(--radius) * 1.4);
-    --radius-2xl: calc(var(--radius) * 1.8);
-    --radius-3xl: calc(var(--radius) * 2.2);
-    --radius-4xl: calc(var(--radius) * 2.6);
+  --font-heading: "Cormorant Garamond Variable", serif;
+  --font-sans: "Source Sans 3 Variable", sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Lamplight's colours beyond shadcn's slots: gold labels, cover foil,
+     the printed page and the studio backdrop behind the drawn book. */
+  --color-highlight: var(--highlight);
+  --color-highlight-foreground: var(--highlight-foreground);
+  --color-foil: var(--foil);
+  --color-foil-foreground: var(--foil-foreground);
+  --color-paper: var(--paper);
+  --color-paper-foreground: var(--paper-foreground);
+  --color-stage: var(--stage);
+  --color-stage-foreground: var(--stage-foreground);
+
+  /* Lamplight's motion. Components apply these with motion-safe: so
+     reduced motion keeps everything still. */
+  --animate-book-sway: book-sway 10s ease-in-out infinite;
+  --animate-page-turn: page-turn 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-hero-rise: hero-rise 900ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-kenburns: kenburns 24s ease-in-out infinite alternate;
+  --animate-colour-in: colour-in 450ms ease-out;
+  --animate-badge-pop: badge-pop 450ms cubic-bezier(0.3, 1.6, 0.5, 1);
+  --animate-marquee: marquee 60s linear infinite;
+
+  /* The drawn book turning gently on its own (BookCover sway). */
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes book-sway {
+    0%,
+    100% {
+      transform: rotateX(6deg) rotateY(-30deg);
+    }
+    50% {
+      transform: rotateX(4deg) rotateY(-6deg);
+    }
+  }
+  /* A sample page turning in from the spine (use with origin-left). */
+  @keyframes page-turn {
+    from {
+      transform: rotateY(-70deg);
+      opacity: 0.4;
+    }
+    to {
+      transform: none;
+      opacity: 1;
+    }
+  }
+  @keyframes hero-rise {
+    from {
+      opacity: 0;
+      transform: translateY(28px);
+    }
+  }
+  @keyframes kenburns {
+    from {
+      transform: scale(1.02);
+    }
+    to {
+      transform: scale(1.12) translate(-1.5%, -1%);
+    }
+  }
+  /* Colour and gallery image swaps cross-fade in. */
+  @keyframes colour-in {
+    from {
+      opacity: 0;
+      transform: scale(1.03);
+    }
+  }
+  @keyframes badge-pop {
+    from {
+      transform: scale(0.3);
+    }
+  }
 }
 
 :root {
-    --background: #f6efe3 /* Parchment */;
-    --foreground: #2b2118 /* Ink */;
-    --card: #fbf7f0;
-    --card-foreground: #2b2118;
-    --popover: #fbf7f0;
-    --popover-foreground: #2b2118;
-    --primary: #6b1e23 /* Oxblood */;
-    --primary-foreground: #fbf6ee;
-    --secondary: #ece0ca /* Sand */;
-    --secondary-foreground: #2b2118;
-    --muted: #ece0ca;
-    --muted-foreground: #6b5b4b;
-    --accent: #e6d5b5;
-    --accent-foreground: #2b2118;
-    --destructive: #a12a22;
-    --border: #ddcfb6;
-    --input: #ddcfb6;
-    --ring: #6b1e23;
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --radius: 0.375rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
+  --background: #f6efe3 /* Parchment */;
+  --foreground: #2b2118 /* Ink */;
+  --card: #fbf7f0;
+  --card-foreground: #2b2118;
+  --popover: #fbf7f0;
+  --popover-foreground: #2b2118;
+  --primary: #6b1e23 /* Oxblood */;
+  --primary-foreground: #fbf6ee;
+  --secondary: #ece0ca /* Sand */;
+  --secondary-foreground: #2b2118;
+  --muted: #ece0ca;
+  --muted-foreground: #6b5b4b;
+  --accent: #e6d5b5;
+  --accent-foreground: #2b2118;
+  --destructive: #a12a22;
+  --border: #ddcfb6;
+  --input: #ddcfb6;
+  --ring: #6b1e23;
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  /* rounded-lg is the mock's 4px and rounded-sm (2.4px) its 2px. */
+  --radius: 0.25rem;
+  --highlight: #7a5c22 /* Gold leaf, deepened from #9a7631 so small labels pass AA (5.4:1 on Parchment) */;
+  --highlight-foreground: #ffffff;
+  --foil: #dcbc72 /* Cover foil */;
+  --foil-foreground: #2b2118;
+  --paper: #fbf6ec /* Page paper */;
+  --paper-foreground: #2b2118;
+  --stage: #ebdfc9 /* Studio backdrop */;
+  --stage-foreground: #2b2118;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
 }
 
 .dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  /* Gold leaf reads at 4.7:1 on the dark background, so it stays. Foil,
+     paper and the stage are the printed book and its photo backdrop, which
+     look the same in either theme. */
+  --highlight: #7a5c22;
+  --highlight-foreground: #ffffff;
+  --foil: #dcbc72;
+  --foil-foreground: #2b2118;
+  --paper: #fbf6ec;
+  --paper-foreground: #2b2118;
+  --stage: #ebdfc9;
+  --stage-foreground: #2b2118;
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
-    }
+  }
   body {
     @apply bg-background text-foreground;
-    }
+  }
   html {
     @apply font-sans;
-    }
+  }
 }
