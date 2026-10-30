@@ -1,4 +1,4 @@
-import { Img } from "~/components/brand/Img";
+import { BookCover, BOOK_STAGE } from "~/components/book/BookCover";
 import { Button } from "~/components/ui/button";
 import { ToggleGroup, ToggleGroupItem } from "~/components/ui/toggle-group";
 import { brand } from "~/content/brand";
@@ -11,11 +11,11 @@ function isColourId(value: string): value is ColourId {
   return colourIds.includes(value as ColourId);
 }
 
-/** The camera's five colourways as swatches (ink top band over the body colour). */
+/** The guide's three covers as round swatches of their leather. */
 export function ColourSwatches({
   value,
   onChange,
-  label = `${brand.productName} colour`,
+  label = `${brand.productName} cover`,
 }: {
   value: ColourId;
   onChange: (id: ColourId) => void;
@@ -39,18 +39,14 @@ export function ColourSwatches({
             value={colour.id}
             aria-label={names[colour.id]}
             title={names[colour.id]}
-            className="ring-offset-background data-[state=on]:ring-foreground relative size-11 rounded-full p-0 hover:bg-transparent data-[state=on]:bg-transparent data-[state=on]:ring-2 data-[state=on]:ring-offset-2"
+            className="ring-offset-background data-[state=on]:ring-foreground size-11 rounded-full p-0 hover:bg-transparent data-[state=on]:bg-transparent data-[state=on]:ring-2 data-[state=on]:ring-offset-2"
           >
             <span
               aria-hidden="true"
-              className="border-foreground/20 absolute inset-1 overflow-hidden rounded-full border transition motion-safe:group-hover/toggle:scale-110"
-            >
-              <span className="bg-foreground absolute inset-x-0 top-0 h-[38%]" />
-              <span
-                className="absolute inset-x-0 bottom-0 h-[62%]"
-                style={{ backgroundColor: colour.swatch }}
-              />
-            </span>
+              className="border-foreground/20 group-hover/toggle:border-foreground/50 size-9 rounded-full border"
+              // Data, not styling: the cover leather from the catalogue.
+              style={{ backgroundColor: colour.swatch }}
+            />
           </ToggleGroupItem>
         ))}
       </ToggleGroup>
@@ -59,7 +55,7 @@ export function ColourSwatches({
   );
 }
 
-/** Decorative studio thumbnails that mirror the swatches (hidden from assistive tech). */
+/** Decorative flat covers that mirror the swatches (hidden from assistive tech). */
 export function ColourThumbs({
   value,
   onChange,
@@ -77,17 +73,18 @@ export function ColourThumbs({
             tabIndex={-1}
             onClick={() => onChange(colour.id)}
             className={cn(
-              "bg-card block size-14 overflow-hidden rounded-xl border-2 p-0",
+              BOOK_STAGE,
+              "flex size-14 items-center justify-center overflow-hidden rounded-sm p-0 shadow-none",
               colour.id === value
                 ? "border-foreground"
-                : "border-transparent opacity-60 hover:opacity-100",
+                : "border-border opacity-60 hover:opacity-100",
             )}
           >
-            <Img
-              image="product-front"
-              sizes="56px"
-              alt=""
-              className="size-full object-contain"
+            <BookCover
+              view="front"
+              colour={colour.id}
+              label=""
+              className="w-7"
             />
           </Button>
         </li>

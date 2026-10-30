@@ -1,7 +1,7 @@
 import { StarIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { Img } from "~/components/brand/Img";
+import { BookCover } from "~/components/book/BookCover";
 import { Button } from "~/components/ui/button";
 import { brand } from "~/content/brand";
 import { money } from "~/content/offers";
@@ -43,16 +43,17 @@ export function StickyCart() {
       aria-hidden={!visible}
       inert={!visible}
       className={cn(
-        "bg-background fixed inset-x-0 bottom-0 z-40 border-t-2 transition-transform duration-300 motion-reduce:transition-none",
+        "bg-card/95 text-card-foreground fixed inset-x-0 bottom-0 z-40 border-t backdrop-blur transition-transform duration-300 motion-reduce:transition-none",
         visible ? "translate-y-0" : "translate-y-full",
       )}
     >
       <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3 sm:px-6">
-        <Img
-          image="product-front"
-          sizes="48px"
-          alt=""
-          className="bg-card hidden size-12 shrink-0 object-contain sm:block"
+        {/* The first guide's cover, flat. */}
+        <BookCover
+          view="front"
+          colour={colours[0]}
+          label=""
+          className="hidden w-8 shrink-0 sm:block"
         />
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-semibold">
@@ -61,7 +62,10 @@ export function StickyCart() {
           </p>
           <p className="text-sm tabular-nums">
             <span className="me-2 hidden items-center gap-1 align-middle md:inline-flex">
-              <StarIcon aria-hidden className="size-3.5 fill-current" />
+              <StarIcon
+                aria-hidden
+                className="text-highlight size-3.5 fill-current"
+              />
               <span aria-hidden="true">
                 {ratingLabel} ({ratingCount})
               </span>
@@ -70,8 +74,8 @@ export function StickyCart() {
               </span>
             </span>
             <span className="font-semibold">{money(price.total)}</span>{" "}
-            <s className="opacity-60">{money(price.compareAt)}</s>{" "}
-            <span className="hidden sm:inline">
+            <s className="text-muted-foreground">{money(price.compareAt)}</s>{" "}
+            <span className="text-primary hidden sm:inline">
               · save {money(price.saving)}
             </span>
           </p>
@@ -84,7 +88,7 @@ export function StickyCart() {
           disabled={!canAdd || adding}
           aria-busy={adding}
           data-testid="sticky-add-to-cart"
-          className="border-border font-heading h-11 shrink-0 rounded-full border-2 px-5 text-sm font-extrabold whitespace-nowrap"
+          className="font-heading hover:bg-foreground hover:text-background h-11 shrink-0 rounded-sm px-5 text-xs font-semibold tracking-[0.12em] whitespace-nowrap uppercase"
         >
           <span className="sm:hidden">{brand.offers.standard.cta}</span>
           <span className="hidden sm:inline">{copy.cta}</span>

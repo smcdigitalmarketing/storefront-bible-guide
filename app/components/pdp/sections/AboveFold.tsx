@@ -1,13 +1,12 @@
+import { Eyebrow } from "~/components/brand/Eyebrow";
 import { PlaceholderTag } from "~/components/brand/PlaceholderTag";
 import { Gallery } from "~/components/gallery/Gallery";
 import { RatingBadge } from "~/components/proof/Rating";
 import { TrustRow } from "~/components/proof/TrustRow";
-import { Badge } from "~/components/ui/badge";
 import { brand } from "~/content/brand";
 import { money } from "~/content/offers";
 import { fillProof } from "~/content/proof";
 import { useOffer } from "~/lib/offer";
-import { cn } from "~/lib/utils";
 
 import { featureIcons } from "../icons";
 import { useSelection } from "../selection";
@@ -15,7 +14,8 @@ import { BuyBox } from "./BuyBox";
 import { UnderButton } from "./UnderButton";
 
 /**
- * SOP sections 1–3 in Flashpop's "gallery-left" hero. They share one grid so
+ * SOP sections 1–3 in Lamplight's "gallery-left" hero: a slightly wider
+ * gallery beside the title, buy box and reassurances. They share one grid so
  * the buy box sits beside the gallery on desktop, but stay in SOP order in the
  * DOM and on mobile.
  */
@@ -23,7 +23,7 @@ export function HeroSections() {
   return (
     <div
       id="top"
-      className="mx-auto grid max-w-7xl scroll-mt-20 grid-cols-1 gap-x-10 gap-y-6 px-4 pt-5 pb-12 sm:px-6 lg:grid-cols-2 lg:grid-rows-[auto_auto_1fr] lg:gap-x-14 lg:pt-10"
+      className="mx-auto grid max-w-7xl scroll-mt-20 grid-cols-1 gap-x-10 gap-y-6 px-4 pt-5 pb-12 sm:px-6 lg:grid-cols-[1.15fr_1fr] lg:grid-rows-[auto_auto_1fr] lg:gap-x-14 lg:pt-10"
     >
       <section
         data-sop-section="above-the-fold"
@@ -55,18 +55,20 @@ function TitleBlock() {
   const { copy } = useOffer();
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 motion-safe:animate-hero-rise">
       {copy.headline && (
-        <p className="bg-foreground font-heading text-secondary inline-flex -rotate-1 items-center gap-2 rounded-full px-3 py-1.5 text-sm font-semibold">
-          {copy.headline}
-        </p>
+        <Eyebrow className="text-primary">{copy.headline}</Eyebrow>
       )}
       <ProofLine />
-      <h1 className="font-heading text-4xl leading-[0.95] font-extrabold tracking-[-0.03em] text-balance sm:text-5xl">
-        <span className="text-primary block">{brand.productName}:</span>{" "}
+      <h1 className="font-heading text-4xl leading-[1.08] font-light text-balance sm:text-6xl">
+        <Eyebrow asChild>
+          <span className="text-muted-foreground mb-4 block font-sans text-[0.75rem] sm:text-xs">
+            {brand.productName}
+          </span>
+        </Eyebrow>
         <span>{capitalise(brand.pdp.titleBenefit)}</span>
       </h1>
-      <p className="text-muted-foreground text-base sm:text-lg">
+      <p className="text-muted-foreground text-base leading-relaxed sm:text-lg">
         {brand.pdp.subheadline}
       </p>
     </div>
@@ -96,33 +98,23 @@ function ProofLine() {
   );
 }
 
-/** Icon chip colours, in turn. */
-const BULLET_TONES = [
-  "bg-secondary text-secondary-foreground",
-  "bg-accent text-accent-foreground",
-  "bg-highlight text-highlight-foreground",
-  "bg-primary text-primary-foreground",
-];
-
 function PriceAndBullets() {
   const { price, bundle } = useSelection();
   const bundleName = brand.bundleNames[bundle.id].title;
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-        <span className="font-heading text-3xl font-extrabold tabular-nums">
+      {/* The price between two thin rules. */}
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-y py-4">
+        <span className="font-heading text-3xl font-normal tabular-nums">
           {money(price.total)}
         </span>
         <s className="text-muted-foreground text-lg tabular-nums">
           {money(price.compareAt)}
         </s>
-        <Badge
-          variant="secondary"
-          className="h-auto px-3 py-1 text-sm font-semibold"
-        >
+        <span className="text-primary text-sm font-semibold">
           You save {money(price.saving)}
-        </Badge>
+        </span>
         <span className="text-muted-foreground w-full text-sm">
           {bundleName} · {money(price.perUnit)} per guide
           {price.giftValue > 0 &&
@@ -131,8 +123,8 @@ function PriceAndBullets() {
         <PlaceholderTag kind="illustrative" />
       </div>
 
-      <ul className="grid gap-3 sm:grid-cols-2">
-        {brand.pdp.bullets.map((bullet, i) => {
+      <ul className="grid gap-3 gap-x-8 sm:grid-cols-2">
+        {brand.pdp.bullets.map((bullet) => {
           const Icon = featureIcons[bullet.icon];
           return (
             <li
@@ -141,14 +133,11 @@ function PriceAndBullets() {
             >
               <span
                 aria-hidden="true"
-                className={cn(
-                  "flex size-9 shrink-0 items-center justify-center rounded-full",
-                  BULLET_TONES[i % BULLET_TONES.length],
-                )}
+                className="text-primary flex size-7 shrink-0 items-center justify-center"
               >
-                <Icon className="size-[18px]" />
+                <Icon className="size-[18px] stroke-[1.25]" />
               </span>
-              <span className="pt-1.5">{bullet.text}</span>
+              <span className="pt-1">{bullet.text}</span>
             </li>
           );
         })}
