@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Checks the server-rendered pages of a running storefront against the SOP
 // and the content rules in AGENTS.md: section order, gallery slides, bundles,
-// proof blocks, placeholder labels, the advertorial's labelling, and an
+// proof blocks, placeholder labels, the advertorial's labelling and pastor
+// slot, the 66-book index, scripture (KJV only, always labelled) and an
 // honesty lint over visible text.
 //
 //   npm run dev                 # or any running server
@@ -57,7 +58,16 @@ const BANNED = [
   /\bsold worldwide\b/i,
   /\b(?:doctor|expert|influencer)[- ]recommended\b/i,
   /\bendorsed by\b/i,
+  // Lamplight's own rules, from the mock's check: no pastor endorsements or
+  // invented pastors, no promised spiritual outcomes, no competitor names.
+  /\bpastor[- ]recommended\b|\brecommended by pastors\b/i,
+  /\bpastor (?:james|john|mark) \w+/i,
+  /\bguaranteed to\b|\bwill transform\b|\bcloser to god\b/i,
+  /\bSaints Label\b|\bXevio\b/i,
 ];
+// Scripture: King James only, and every quoted verse names its translation.
+const COPYRIGHTED_TRANSLATIONS = /\((?:NIV|ESV|NLT|NKJV|CSB|NASB|MSG)\)/;
+const PASTOR_SLOT = "Slot for a real, consenting pastor";
 const NEGATION = /\b(?:no|not|never|without|won't|don't|isn't)\b/i;
 // Wording that only made sense in the retro-camera mock store.
 const MOCK_LEFTOVERS = [
@@ -100,7 +110,19 @@ function visibleText(html) {
 
 const count = (html, pattern) => (html.match(pattern) ?? []).length;
 
+/** Every quoted verse (a data-verse figure) shows "(KJV)", and no other translation appears. */
+function lintScripture(path, html) {
+  for (const m of html.matchAll(/data-verse="([^"]+)"[\s\S]*?<\/figure>/g)) {
+    // React separates text nodes with <!-- --> in server HTML.
+    if (!/\(KJV\)/.test(m[0].replace(/<!--.*?-->/g, "")))
+      fail(path, `verse ${m[1]} doesn't show "(KJV)"`);
+  }
+  if (COPYRIGHTED_TRANSLATIONS.test(visibleText(html)))
+    fail(path, "quotes a copyrighted translation");
+}
+
 function lintText(path, html) {
+  lintScripture(path, html);
   const sentences = visibleText(html).split(/(?<=[.!?])\s+/);
   for (const sentence of sentences) {
     for (const pattern of BANNED) {
@@ -173,6 +195,10 @@ async function main() {
   for (const path of STORE_PAGES) {
     const html = await get(path);
     lintText(path, html);
+    if (path === "/how-it-works") {
+      const books = count(html, /data-book=/g);
+      if (books !== 66) fail(path, `${books} books in the index, expected 66`);
+    }
     if (path === "/") {
       if (
         !html.includes('data-proof="rating"') &&
@@ -202,6 +228,8 @@ async function main() {
       advertorials++;
       if (!html.includes(`href="${HERO}`))
         fail(path, `the advertorial doesn't link to ${HERO}`);
+      if (!visibleText(html).includes(PASTOR_SLOT))
+        fail(path, "the advertorial has no labelled pastor slot");
     }
   }
   if (advertorials !== 1)
