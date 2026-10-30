@@ -49,7 +49,7 @@ export default function Faq() {
                 <Button
                   asChild
                   variant="ghost"
-                  className="h-11 justify-start rounded-full px-3 font-normal"
+                  className="text-muted-foreground hover:text-foreground h-11 justify-start rounded-sm px-3 font-normal hover:bg-transparent hover:underline"
                 >
                   <a href={`#${category.id}`}>{category.title}</a>
                 </Button>
@@ -67,7 +67,7 @@ export default function Faq() {
             >
               <h2
                 id={`${category.id}-heading`}
-                className="font-heading mb-3 text-2xl font-extrabold"
+                className="font-heading mb-3 text-3xl font-medium"
               >
                 {category.title}
               </h2>
@@ -81,9 +81,9 @@ export default function Faq() {
                   <AccordionItem
                     key={item.q}
                     value={item.q}
-                    className="border-foreground/20 border-b"
+                    className="border-b"
                   >
-                    <AccordionTrigger className="**:data-[slot=accordion-trigger-icon]:text-foreground py-4 text-base hover:no-underline">
+                    <AccordionTrigger className="**:data-[slot=accordion-trigger-icon]:text-highlight py-4 text-base font-semibold hover:no-underline">
                       {item.q}
                     </AccordionTrigger>
                     <AccordionContent className="text-muted-foreground pb-5 text-[0.95rem] leading-relaxed">

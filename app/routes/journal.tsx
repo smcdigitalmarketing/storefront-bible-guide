@@ -29,7 +29,7 @@ export default function Journal() {
       />
       <ul
         role="list"
-        className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 md:grid-cols-2"
+        className="mx-auto grid max-w-7xl gap-x-10 gap-y-14 px-4 sm:px-6 md:grid-cols-2"
       >
         {journalArticles.map((article) => (
           <li key={article.to}>

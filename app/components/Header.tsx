@@ -24,7 +24,7 @@ import { cn } from "~/lib/utils";
 import type { loader as rootLoader } from "~/root";
 
 import { MobileNav, MobileNavTrigger } from "./MobileNav";
-import { NAV_ITEMS, type NavItem } from "./store/nav";
+import { NAV_ITEMS, storePaths, type NavItem } from "./store/nav";
 import { Wordmark } from "./store/Wordmark";
 
 function cartCountLabel(count: number) {
@@ -39,9 +39,13 @@ function displayCount(count: number) {
   return count > 99 ? "99+" : String(count);
 }
 
-// Flashpop's header is centred: three links, the wordmark, two links and the icons.
+// Lamplight's header is centred: three links, the wordmark, then Journal,
+// About and the icons. FAQ stays in the mobile menu and the footer.
 const LEFT_NAV = NAV_ITEMS.slice(0, 3);
-const RIGHT_NAV = NAV_ITEMS.slice(3);
+const RIGHT_NAV: NavItem[] = [
+  { label: brand.store.nav.journal, to: storePaths.journal },
+  { label: brand.store.nav.about, to: storePaths.about },
+];
 
 function HeaderNav({ items, label }: { items: NavItem[]; label: string }) {
   return (
@@ -53,7 +57,7 @@ function HeaderNav({ items, label }: { items: NavItem[]; label: string }) {
               asChild
               className={cn(
                 navigationMenuTriggerStyle(),
-                "h-11 bg-transparent font-medium whitespace-nowrap underline-offset-[6px] hover:underline aria-[current=page]:underline",
+                "font-heading text-highlight hover:text-highlight focus:text-highlight h-11 rounded-sm bg-transparent px-3 text-sm font-medium tracking-[0.12em] whitespace-nowrap uppercase underline-offset-[6px] hover:bg-transparent hover:underline focus:bg-transparent aria-[current=page]:underline",
               )}
             >
               <NavLink to={item.to}>{item.label}</NavLink>
@@ -69,7 +73,7 @@ export function Header({ shopInfo }: { shopInfo: StorefrontShop }) {
   const totalQuantity = useCart((state) => state.data.totalQuantity);
   const [failedLogoUrl, setFailedLogoUrl] = useState<string | null>(null);
   const rootData = useRouteLoaderData<typeof rootLoader>("root");
-  // mock.shop's logo belongs to the stand-in catalog, not to Flashpop.
+  // mock.shop's logo belongs to the stand-in catalog, not to Lamplight.
   const standIn = isMockShopDomain(
     rootData?.shopIdentity.scriptShop.myshopifyDomain,
   );
@@ -78,8 +82,8 @@ export function Header({ shopInfo }: { shopInfo: StorefrontShop }) {
   const homeLabel = showLogo ? shopInfo.name : brand.name;
 
   return (
-    <header className="bg-background sticky top-0 z-40 border-b">
-      <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-2 px-4">
+    <header className="bg-background/95 supports-backdrop-filter:bg-background/85 sticky top-0 z-40 border-b backdrop-blur">
+      <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-2 px-4 sm:px-6">
         <div className="flex min-w-0 flex-1 items-center gap-2">
           <div className="-ms-2 lg:hidden">
             <MobileNavTrigger />
@@ -91,7 +95,7 @@ export function Header({ shopInfo }: { shopInfo: StorefrontShop }) {
           to="/"
           aria-label={homeLabel}
           title={homeLabel}
-          className="focus-visible:ring-ring/50 inline-flex max-w-48 min-w-0 shrink-0 items-center rounded-md outline-none focus-visible:ring-3"
+          className="focus-visible:ring-ring/50 inline-flex max-w-48 min-w-0 shrink-0 items-center rounded-sm outline-none focus-visible:ring-3"
         >
           {logo && showLogo ? (
             <img
@@ -108,14 +112,19 @@ export function Header({ shopInfo }: { shopInfo: StorefrontShop }) {
               onError={() => setFailedLogoUrl(logo.url)}
             />
           ) : (
-            <Wordmark className="text-xl sm:text-2xl" />
+            <Wordmark size="md" className="text-xl sm:text-2xl" />
           )}
         </Link>
 
         <div className="flex flex-1 items-center justify-end gap-2">
           <HeaderNav items={RIGHT_NAV} label="More navigation" />
           <div className="flex shrink-0 items-center">
-            <Button asChild variant="ghost" size="icon-lg">
+            <Button
+              asChild
+              variant="ghost"
+              size="icon-lg"
+              className="rounded-full"
+            >
               <Link
                 to="/search"
                 aria-label="Search"
@@ -129,12 +138,22 @@ export function Header({ shopInfo }: { shopInfo: StorefrontShop }) {
                 <SearchIcon className="size-5" aria-hidden="true" />
               </Link>
             </Button>
-            <Button asChild variant="ghost" size="icon-lg">
+            <Button
+              asChild
+              variant="ghost"
+              size="icon-lg"
+              className="rounded-full"
+            >
               <Link to="/account" aria-label="Account">
                 <UserIcon className="size-5" aria-hidden="true" />
               </Link>
             </Button>
-            <Button asChild variant="ghost" size="icon-lg" className="relative">
+            <Button
+              asChild
+              variant="ghost"
+              size="icon-lg"
+              className="relative rounded-full"
+            >
               <Link
                 to="/cart"
                 aria-label={cartCountLabel(totalQuantity)}
@@ -148,8 +167,9 @@ export function Header({ shopInfo }: { shopInfo: StorefrontShop }) {
                 <ShoppingBagIcon className="size-5" aria-hidden="true" />
                 {totalQuantity > 0 ? (
                   <Badge
+                    key={totalQuantity}
                     aria-hidden="true"
-                    className="absolute -end-0.5 -top-0.5 min-w-5 px-1"
+                    className="absolute -end-0.5 -top-0.5 h-5 min-w-5 rounded-full px-1 text-[11px] leading-5 font-bold tabular-nums motion-safe:animate-badge-pop"
                   >
                     {displayCount(totalQuantity)}
                   </Badge>

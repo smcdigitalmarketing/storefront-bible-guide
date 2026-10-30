@@ -8,16 +8,17 @@ type Tone = "primary" | "secondary";
 type Size = "md" | "lg";
 
 /**
- * Flashpop's sticker-style pill: an ink outline and, on the primary tone, an
- * offset ink shadow. Layered on the shadcn Button's default and outline variants.
+ * Lamplight's button: small caps in the heading face on a square-cornered
+ * oxblood fill, or a 1px ink outline that fills with ink on hover. Layered on
+ * the shadcn Button's default and outline variants.
  */
 export function brandButtonClass(tone: Tone = "primary", size: Size = "md") {
   return cn(
-    "font-heading rounded-full border-2 border-foreground font-extrabold whitespace-normal",
-    size === "lg" ? "h-14 px-7 text-base" : "h-11 px-5 text-sm",
+    "font-heading gap-2 rounded-sm font-semibold tracking-[0.12em] whitespace-normal uppercase",
+    size === "lg" ? "h-12 px-7 text-sm" : "h-11 px-5 text-xs",
     tone === "primary"
-      ? "shadow-[4px_4px_0_0] shadow-foreground hover:bg-primary motion-safe:hover:-translate-y-0.5 motion-safe:hover:shadow-[5px_6px_0_0]"
-      : "bg-card text-card-foreground hover:bg-secondary hover:text-secondary-foreground",
+      ? "hover:bg-foreground hover:text-background"
+      : "border-foreground text-foreground hover:bg-foreground hover:text-background bg-transparent shadow-none",
   );
 }
 
@@ -25,7 +26,7 @@ export function brandButtonVariant(tone: Tone = "primary") {
   return tone === "primary" ? ("default" as const) : ("outline" as const);
 }
 
-/** A store link styled as Flashpop's pill button. */
+/** A store link styled as Lamplight's button. */
 export function BrandLinkButton({
   to,
   tone = "primary",

@@ -1,10 +1,14 @@
 import { Link } from "react-router";
 
+import { BookIndex, LookInsideButton } from "~/components/book/LookInside";
+import { SamplePage } from "~/components/book/SamplePage";
+import { Eyebrow } from "~/components/brand/Eyebrow";
 import { Img } from "~/components/brand/Img";
 import { PlaceholderTag } from "~/components/brand/PlaceholderTag";
 import { BrandLinkButton } from "~/components/store/BrandButton";
 import { PRODUCT_PATH, storePaths } from "~/components/store/nav";
 import { PageTitle } from "~/components/store/PageTitle";
+import { samplePages } from "~/content/books";
 import { brand } from "~/content/brand";
 import { product } from "~/content/product";
 import { guideSteps } from "~/content/store-pages";
@@ -27,9 +31,14 @@ export function meta({ matches }: Route.MetaArgs) {
   ];
 }
 
-const HEADING = "font-heading text-3xl font-extrabold sm:text-4xl";
+const HEADING = "font-heading text-3xl leading-tight font-medium sm:text-4xl";
+
+/** The book whose sample page shows what every page holds. */
+const SAMPLE_BOOK = "genesis";
 
 export default function HowItWorks() {
+  const page =
+    samplePages.find((p) => p.bookId === SAMPLE_BOOK) ?? samplePages[0];
   return (
     <main className="flex-1 pb-24" id="main-content" tabIndex={-1}>
       <PageTitle
@@ -38,68 +47,88 @@ export default function HowItWorks() {
         intro={brand.pdp.subheadline}
       />
       <div className="mx-auto max-w-7xl space-y-24 px-4 sm:px-6">
-        <ol className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {product.howItWorks.map((step, i) => (
-            <li
-              key={step.title}
-              className="bg-card text-card-foreground rounded-3xl border-2 p-3"
-            >
-              <Img
-                image={step.image}
-                sizes="(min-width: 1024px) 25vw, 50vw"
-                className="aspect-square w-full rounded-lg object-cover"
-              />
-              <div className="space-y-1 pt-4">
-                <p className="text-muted-foreground text-sm">Step {i + 1}</p>
-                <h2 className="font-heading text-2xl font-bold">
-                  {step.title}
-                </h2>
-                <p className="text-muted-foreground">{step.body}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
+        <section aria-label="Four steps" className="space-y-6">
+          <ol className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {product.howItWorks.map((step, i) => (
+              <li key={step.title}>
+                <div className="overflow-hidden rounded-sm">
+                  <Img
+                    image={step.image}
+                    sizes="(min-width: 1024px) 25vw, 50vw"
+                    className="aspect-square w-full object-cover"
+                  />
+                </div>
+                <div className="space-y-1 pt-4">
+                  <Eyebrow className="text-muted-foreground">
+                    Step {i + 1}
+                  </Eyebrow>
+                  <h2 className="font-heading text-2xl font-medium">
+                    {step.title}
+                  </h2>
+                  <p className="text-muted-foreground">{step.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+          <PlaceholderTag
+            kind="competitor"
+            label="Step photos: competitor stand-ins, used as placeholders"
+          />
+        </section>
 
         <section
-          aria-labelledby="dial-heading"
-          className="grid items-center gap-10 md:grid-cols-2"
+          aria-labelledby="page-heading"
+          className="grid items-start gap-12 md:grid-cols-2"
         >
-          <Img
-            image="interior-chronicles"
-            sizes="(min-width: 768px) 50vw, 100vw"
-            className="aspect-square w-full rounded-3xl object-cover"
+          <SamplePage
+            page={page}
+            className="shadow-foreground/50 mx-auto w-full max-w-md shadow-[0_24px_50px_-28px]"
           />
-          <div className="space-y-4">
-            <h2 id="dial-heading" className={HEADING}>
-              Six looks on one dial
+          <div className="space-y-5">
+            <Eyebrow>Inside the guide</Eyebrow>
+            <h2 id="page-heading" className={HEADING}>
+              What&apos;s on every page
             </h2>
-            <p className="text-muted-foreground text-lg">
-              Turn the dial on the top plate before you shoot to pick a look,
-              from a warm vintage default to black and white. The look is part
-              of the photo the moment you press the shutter.
-            </p>
-            <PlaceholderTag
-              kind="tbc"
-              label="Full list of looks to be confirmed with the supplier"
-            />
+            <ol className="space-y-3">
+              {product.callouts.map((callout, i) => (
+                <li key={callout.title} className="flex gap-3">
+                  <span className="font-heading text-primary w-6 shrink-0 text-lg font-medium tabular-nums">
+                    {i + 1}
+                  </span>
+                  <span>
+                    <span className="block font-semibold">{callout.title}</span>
+                    <span className="text-muted-foreground">
+                      {callout.body}
+                    </span>
+                  </span>
+                </li>
+              ))}
+            </ol>
+            <div className="flex flex-wrap items-center gap-3 pt-1">
+              <LookInsideButton initialBook={page.bookId} />
+              <PlaceholderTag
+                kind="placeholder"
+                label="Sample pages written for Lamplight, to be reviewed"
+              />
+            </div>
           </div>
         </section>
 
-        <section aria-labelledby="transfer-heading" className="space-y-8">
-          <h2 id="transfer-heading" className={HEADING}>
-            Getting photos onto your phone
+        <section aria-labelledby="habits-heading" className="space-y-8">
+          <h2 id="habits-heading" className={HEADING}>
+            Four habits for any book
           </h2>
-          <ol className="grid gap-4 md:grid-cols-4">
+          <ol className="grid gap-6 md:grid-cols-4">
             {guideSteps.map((step, i) => (
               <li
                 key={step.title}
-                className="bg-secondary text-secondary-foreground space-y-2 rounded-3xl p-5"
+                className="border-foreground space-y-2 border-t pt-5"
               >
-                <span className="font-heading text-primary text-4xl font-bold">
+                <span className="font-heading text-primary text-4xl font-medium">
                   {i + 1}
                 </span>
                 <h3 className="text-lg font-semibold">{step.title}</h3>
-                <p>{step.body}</p>
+                <p className="text-muted-foreground">{step.body}</p>
               </li>
             ))}
           </ol>
@@ -108,20 +137,28 @@ export default function HowItWorks() {
               to={storePaths.guide}
               className="inline-flex min-h-11 items-center underline underline-offset-4"
             >
-              Read the full transfer guide
+              Read the full guide to using it
             </Link>
             <PlaceholderTag
-              kind="listed"
-              label="Based on the competitor's listing · confirm with supplier"
+              kind="placeholder"
+              label="Reading habits written for Lamplight, to be reviewed"
             />
           </p>
         </section>
 
+        <section aria-labelledby="books-heading" className="space-y-6">
+          <h2 id="books-heading" className={HEADING}>
+            All 66 books
+          </h2>
+          {/* The one index on this page: check:content counts 66 data-book entries. */}
+          <BookIndex />
+        </section>
+
         <section aria-labelledby="specs-heading" className="mx-auto max-w-3xl">
-          <h2 id="specs-heading" className={`${HEADING} mb-6`}>
+          <h2 id="specs-heading" className={`${HEADING} mb-6 text-center`}>
             Specs
           </h2>
-          <dl className="divide-foreground/20 border-foreground/20 divide-y border-y">
+          <dl className="divide-y border-y">
             {Object.values(product.facts).map((fact) => (
               <div
                 key={fact.label}

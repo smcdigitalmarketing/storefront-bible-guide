@@ -39,14 +39,15 @@ export function meta({ matches }: Route.MetaArgs) {
 }
 
 const TOPICS = [
-  "My camera",
+  "The guide",
+  "A group order",
   "An order",
   "Returns",
   "Press or partnerships",
   "Something else",
 ];
 
-const FIELD = "bg-card text-card-foreground rounded-xl";
+const FIELD = "bg-card text-card-foreground border-foreground/30 rounded-sm";
 
 export default function Contact() {
   // No support inbox yet: the form only works once hydrated, so it never falls
@@ -142,10 +143,10 @@ export default function Contact() {
         </form>
         <aside
           aria-label="Other ways to reach us"
-          className="space-y-6 text-sm"
+          className="space-y-6 border-t pt-6 text-sm lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8"
         >
           <div className="space-y-1">
-            <p className="flex items-center gap-2 font-semibold">
+            <p className="font-heading text-highlight flex items-center gap-2 text-xs font-medium tracking-[0.12em] uppercase">
               <MailIcon className="size-4" aria-hidden="true" /> Email
             </p>
             <p className="text-muted-foreground">
@@ -153,7 +154,7 @@ export default function Contact() {
             </p>
           </div>
           <div className="space-y-1">
-            <p className="flex items-center gap-2 font-semibold">
+            <p className="font-heading text-highlight flex items-center gap-2 text-xs font-medium tracking-[0.12em] uppercase">
               <MessageCircleIcon className="size-4" aria-hidden="true" />{" "}
               Response times
             </p>

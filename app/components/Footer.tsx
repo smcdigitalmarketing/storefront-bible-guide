@@ -22,7 +22,7 @@ const FOOTER_COLUMNS: { id: string; title: string; links: NavItem[] }[] = [
   },
   {
     id: "customer-care",
-    title: "Customer care",
+    title: "Help",
     links: [
       { to: storePaths.how, label: brand.store.nav.how },
       { to: storePaths.faq, label: "FAQ" },
@@ -41,15 +41,19 @@ const FOOTER_COLUMNS: { id: string; title: string; links: NavItem[] }[] = [
   },
 ];
 
+/** Small caps in bright foil gold: the gold-leaf label colour is for light grounds. */
+const COLUMN_TITLE =
+  "font-heading text-foil mb-3 text-xs font-medium tracking-[0.12em] uppercase";
+
 function FooterLinks({ links }: { links: NavItem[] }) {
   return (
-    <ul role="list" className="flex flex-col gap-1">
+    <ul role="list" className="flex flex-col">
       {links.map((link) => (
         <li key={link.to}>
           <Button
             asChild
             variant="link"
-            className="text-muted-foreground h-11 px-0"
+            className="text-background/80 hover:text-background h-10 px-0 font-normal"
           >
             <Link to={link.to}>{link.label}</Link>
           </Button>
@@ -59,30 +63,34 @@ function FooterLinks({ links }: { links: NavItem[] }) {
   );
 }
 
+/** Lamplight's footer: parchment type on ink, with thin rules. */
 export function Footer({ shopInfo }: { shopInfo: StorefrontShop }) {
   const hasPaymentMethods = shopInfo.paymentMethods.length > 0;
 
   return (
-    <footer className="mx-auto w-full max-w-7xl px-4">
-      <Separator />
+    <footer className="bg-foreground text-background">
       <div
         className={cn(
-          "grid grid-cols-1 gap-8 py-12 text-sm md:grid-cols-2 lg:grid-cols-4",
-          hasPaymentMethods && "xl:grid-cols-5",
+          "mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 py-14 text-sm sm:px-6 md:grid-cols-2 lg:grid-cols-[1.4fr_repeat(3,1fr)]",
+          hasPaymentMethods && "xl:grid-cols-[1.4fr_repeat(4,1fr)]",
         )}
       >
         <div className="min-w-0 space-y-4 wrap-anywhere">
           <h2>
-            <Wordmark />
+            {/* The wordmark's oxblood name and gold-leaf lamp are set for
+                parchment, so on ink they take parchment and foil gold. */}
+            <Wordmark
+              size="lg"
+              className="[&>span]:text-background [&>svg]:text-foil"
+            />
           </h2>
-          <p className="text-muted-foreground max-w-xs">{brand.tagline}</p>
+          <p className="font-heading text-background/80 max-w-xs text-lg italic">
+            {brand.tagline}
+          </p>
         </div>
         {FOOTER_COLUMNS.map((column) => (
           <nav key={column.id} aria-labelledby={`footer-${column.id}-heading`}>
-            <h2
-              className="font-heading mb-4 font-medium"
-              id={`footer-${column.id}-heading`}
-            >
+            <h2 className={COLUMN_TITLE} id={`footer-${column.id}-heading`}>
               {column.title}
             </h2>
             <FooterLinks links={column.links} />
@@ -90,10 +98,7 @@ export function Footer({ shopInfo }: { shopInfo: StorefrontShop }) {
         ))}
         {hasPaymentMethods ? (
           <div>
-            <h2
-              id="footer-payment-methods-heading"
-              className="font-heading mb-4 font-medium"
-            >
+            <h2 id="footer-payment-methods-heading" className={COLUMN_TITLE}>
               Payment methods
             </h2>
             <ul
@@ -102,7 +107,10 @@ export function Footer({ shopInfo }: { shopInfo: StorefrontShop }) {
               className="flex flex-wrap items-center gap-2"
             >
               {shopInfo.paymentMethods.map((method) => (
-                <li key={method} className="max-w-full">
+                <li
+                  key={method}
+                  className="bg-background text-foreground max-w-full rounded-sm"
+                >
                   <PaymentMethodIcon method={method} />
                 </li>
               ))}
@@ -110,22 +118,25 @@ export function Footer({ shopInfo }: { shopInfo: StorefrontShop }) {
           </div>
         ) : null}
       </div>
-      <Separator />
-      <nav aria-label="Policies" className="py-4 text-sm">
-        <ul role="list" className="flex flex-wrap gap-x-6">
-          {POLICY_ITEMS.map((link) => (
-            <li key={link.to}>
-              <Button
-                asChild
-                variant="link"
-                className="text-muted-foreground h-11 px-0"
-              >
-                <Link to={link.to}>{link.label}</Link>
-              </Button>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <Separator className="bg-background/15" />
+      <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-5 text-xs sm:flex-row sm:items-center sm:justify-between sm:px-6">
+        <nav aria-label="Policies">
+          <ul role="list" className="flex flex-wrap gap-x-5">
+            {POLICY_ITEMS.map((link) => (
+              <li key={link.to}>
+                <Button
+                  asChild
+                  variant="link"
+                  className="text-background/70 hover:text-background h-10 px-0 text-xs font-normal"
+                >
+                  <Link to={link.to}>{link.label}</Link>
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <p className="text-background/70 max-w-xl">{brand.pdp.footerBlurb}</p>
+      </div>
     </footer>
   );
 }

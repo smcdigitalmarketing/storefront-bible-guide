@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 
+import { Eyebrow } from "~/components/brand/Eyebrow";
 import { Img } from "~/components/brand/Img";
 import { brand } from "~/content/brand";
 import type { ImageId } from "~/content/images";
@@ -17,7 +18,7 @@ export type JournalArticle = {
   readTime: string;
 };
 
-/** The journal's two articles: the advertorial and the photo-transfer guide. */
+/** The journal's two articles: the advertorial and the reading guide. */
 export const journalArticles: JournalArticle[] = [
   {
     to: storePaths.advertorial,
@@ -37,6 +38,7 @@ export const journalArticles: JournalArticle[] = [
   },
 ];
 
+/** An unframed journal card: the photo, small-caps kicker, serif title and dek. */
 export function ArticleCard({
   article,
   large = false,
@@ -47,9 +49,9 @@ export function ArticleCard({
   return (
     <Link
       to={article.to}
-      className="group bg-card text-card-foreground focus-visible:ring-ring/50 block rounded-3xl border-2 p-2 outline-none focus-visible:ring-3"
+      className="group focus-visible:ring-ring/50 block rounded-sm outline-none focus-visible:ring-3"
     >
-      <div className="overflow-hidden rounded-[1.1rem]">
+      <div className="overflow-hidden rounded-sm">
         <Img
           image={article.image}
           sizes="(min-width: 1024px) 50vw, 100vw"
@@ -59,13 +61,13 @@ export function ArticleCard({
           )}
         />
       </div>
-      <div className="space-y-2 px-2 pt-4 pb-2">
-        <p className="text-muted-foreground text-xs">
+      <div className="space-y-2 pt-5">
+        <Eyebrow className="text-muted-foreground">
           {article.kicker} · {article.readTime}
-        </p>
+        </Eyebrow>
         <h2
           className={cn(
-            "font-heading text-2xl leading-tight font-extrabold group-hover:underline",
+            "font-heading text-2xl leading-tight font-medium text-balance underline-offset-4 group-hover:underline",
             large && "sm:text-3xl",
           )}
         >
