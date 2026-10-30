@@ -77,7 +77,7 @@ export type HeroColour = {
   id: ColourId;
   /** The brand's name for the colourway. */
   name: string;
-  /** The Shopify option value ("Bubblegum", or a stand-in's "Red"). */
+  /** The Shopify option value ("Saddle", or a stand-in's "Hardcover"). */
   optionValue: string;
   swatch: string;
   variantId: string;
