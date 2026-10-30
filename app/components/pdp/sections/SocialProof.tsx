@@ -1,6 +1,7 @@
 import { ChevronDownIcon, XIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 
+import { Eyebrow } from "~/components/brand/Eyebrow";
 import { Img } from "~/components/brand/Img";
 import { SectionHeading } from "~/components/brand/SectionHeading";
 import { ExpertQuote, PressQuotes } from "~/components/proof/Endorsements";
@@ -13,7 +14,6 @@ import {
 } from "~/components/proof/ReviewParts";
 import { ReviewPhotos } from "~/components/proof/ReviewPhotos";
 import { Button } from "~/components/ui/button";
-import { Card } from "~/components/ui/card";
 import { Label } from "~/components/ui/label";
 import {
   Select,
@@ -32,7 +32,6 @@ import {
   type ReviewSort,
 } from "~/content/reviews";
 import type { Review } from "~/content/types";
-import { cn } from "~/lib/utils";
 
 const PAGE = 12;
 /** The topic chip that clears the topic filter. */
@@ -41,8 +40,10 @@ const ALL_TOPICS = "all";
 /**
  * SOP section 5: the rating summary, customer photos, then a wall of reviews
  * shown up front (never a carousel) that filters by stars and theme, sorts,
- * and grows 12 at a time. Then the expert and press slots. Every number and
- * review is a labelled placeholder until real reviews exist.
+ * and grows 12 at a time. Lamplight sets them as pull quotes: the lead review
+ * large and centred between rules, the rest in a ruled three-column list.
+ * Then the expert and press slots. Every number and review is a labelled
+ * placeholder until real reviews exist.
  */
 export function SocialProof() {
   const [stars, setStars] = useState<number | null>(null);
@@ -74,13 +75,13 @@ export function SocialProof() {
       id="reviews"
       data-sop-section="social-proof"
       aria-labelledby="reviews-heading"
-      className="scroll-mt-4 bg-primary py-16 text-primary-foreground sm:py-24"
+      className="scroll-mt-4 bg-card py-16 text-card-foreground sm:py-24"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeading
           id="reviews-heading"
           sub={fillProof(brand.pdp.reviewsSub)}
-          onDark
+          align="center"
         >
           {brand.pdp.reviewsHeadline}
         </SectionHeading>
@@ -116,7 +117,7 @@ export function SocialProof() {
                   setTheme(null);
                 })
               }
-              className="h-11 gap-1 px-1 font-semibold text-primary-foreground underline focus-visible:ring-primary-foreground/60"
+              className="h-11 gap-1 px-1 font-semibold text-foreground underline underline-offset-4"
             >
               <XIcon aria-hidden className="size-3.5" />
               Clear filters
@@ -130,16 +131,16 @@ export function SocialProof() {
               No reviews match these filters yet.
             </p>
           ) : (
-            <StickyNotes reviews={visible} />
+            <PullQuotes reviews={visible} />
           )}
         </div>
 
         {filtered.length > shown ? (
           <div className="mt-10 flex justify-center">
             <Button
-              variant="secondary"
+              variant="outline"
               onClick={() => setShown((n) => n + PAGE)}
-              className="h-12 gap-2 rounded-full border-2 border-border px-6 font-heading font-semibold shadow-[3px_3px_0_0] shadow-foreground hover:shadow-none focus-visible:ring-primary-foreground/60"
+              className="h-12 gap-2 rounded-sm border-foreground bg-transparent px-6 font-heading text-sm font-semibold tracking-[0.12em] text-highlight uppercase shadow-none hover:bg-foreground hover:text-background"
             >
               Show more reviews
               <ChevronDownIcon aria-hidden className="size-4" />
@@ -171,11 +172,12 @@ function Toolbar({
     ...t,
     count: productReviews.filter((r) => r.tags.includes(t.id)).length,
   }));
+  // Thin outlined chips; the chosen topic fills with ink.
   const chip =
-    "h-11 gap-1.5 rounded-full border-2 border-primary-foreground/40 px-3.5 text-sm font-medium hover:border-primary-foreground hover:bg-transparent hover:text-primary-foreground data-[state=on]:border-border data-[state=on]:bg-secondary data-[state=on]:text-secondary-foreground focus-visible:ring-primary-foreground/60";
+    "h-11 gap-1.5 rounded-sm border border-border px-3.5 text-sm font-medium hover:border-foreground hover:bg-transparent hover:text-foreground data-[state=on]:border-foreground data-[state=on]:bg-foreground data-[state=on]:text-background data-[state=on]:hover:bg-foreground data-[state=on]:hover:text-background";
 
   return (
-    <div className="mt-10 flex flex-col gap-4 border-t border-primary-foreground/15 pt-6 lg:flex-row lg:items-center lg:justify-between">
+    <div className="mt-10 flex flex-col gap-4 border-t border-border pt-6 lg:flex-row lg:items-center lg:justify-between">
       <ToggleGroup
         type="single"
         aria-label="Filter reviews by topic"
@@ -203,7 +205,7 @@ function Toolbar({
         <Select value={sort} onValueChange={(v) => onSort(v as ReviewSort)}>
           <SelectTrigger
             id="review-sort"
-            className="rounded-full border-2 border-primary-foreground px-3 font-semibold shadow-none focus-visible:border-primary-foreground focus-visible:ring-primary-foreground/60 data-[size=default]:h-11 [&>svg]:text-primary-foreground"
+            className="rounded-sm border-border px-3 font-semibold shadow-none data-[size=default]:h-11 [&>svg]:text-foreground"
           >
             <SelectValue />
           </SelectTrigger>
@@ -220,57 +222,68 @@ function Toolbar({
   );
 }
 
-// Flashpop's sticky notes: paper colours from the palette, each at a tilt.
-const NOTE_COLOURS = [
-  "bg-secondary text-secondary-foreground",
-  "bg-accent text-accent-foreground",
-  "bg-card text-card-foreground",
-  // The mock's fifth note is mint (#B9F3D2), which has no theme token.
-  "bg-muted text-foreground",
-  "bg-highlight text-highlight-foreground",
-];
-const NOTE_TILTS = [
-  "-rotate-2",
-  "rotate-1",
-  "rotate-2",
-  "-rotate-1",
-  "rotate-0",
-];
-
-function StickyNotes({ reviews }: { reviews: Review[] }) {
+/**
+ * Lamplight's pull quotes: the first review set large in italic between two
+ * rules, then the rest in a three-column list under hairlines, each with a
+ * small, slightly grey photo.
+ */
+function PullQuotes({ reviews }: { reviews: Review[] }) {
+  const [lead, ...rest] = reviews;
   return (
-    <ul className="columns-1 gap-5 sm:columns-2 lg:columns-3">
-      {reviews.map((review, i) => (
-        <li
-          key={review.id}
-          data-review-card
-          className="mb-5 break-inside-avoid"
-        >
-          <Card
-            className={cn(
-              "gap-0 overflow-visible rounded-[4px] p-5 text-base shadow-[0_12px_24px_-12px] ring-0 shadow-foreground/45 hover:rotate-0 motion-safe:transition",
-              NOTE_COLOURS[i % NOTE_COLOURS.length],
-              NOTE_TILTS[i % NOTE_TILTS.length],
-            )}
-          >
-            {review.photo ? (
-              <div className="mb-4 -rotate-1 bg-card p-2 pb-7 shadow-xl">
+    <div>
+      <figure
+        data-review-card
+        className="mx-auto max-w-4xl border-y border-border py-12 text-center"
+      >
+        <Eyebrow className="mb-4 text-muted-foreground">{lead.title}</Eyebrow>
+        <blockquote className="font-heading text-3xl leading-snug text-balance italic sm:text-5xl">
+          “{lead.body}”
+        </blockquote>
+        <figcaption className="mt-6 flex flex-col items-center gap-2">
+          <span className="text-primary">
+            <Stars rating={lead.rating} className="size-4" />
+          </span>
+          <ReviewByline review={lead} />
+          <ReviewReply review={lead} />
+          <ReviewFooter
+            review={lead}
+            className="mx-auto max-w-sm text-center [&>div]:justify-center [&_button]:ms-0"
+          />
+        </figcaption>
+      </figure>
+      {rest.length ? (
+        <ul className="mt-12 grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+          {rest.map((review) => (
+            <li
+              key={review.id}
+              data-review-card
+              className="flex gap-4 border-t border-border pt-6"
+            >
+              {review.photo ? (
                 <Img
                   image={review.photo}
-                  sizes="(min-width: 1024px) 30vw, 90vw"
-                  className="aspect-[4/3] w-full object-cover"
+                  sizes="80px"
+                  className="size-16 shrink-0 object-cover grayscale-[30%]"
                 />
-              </div>
-            ) : null}
-            <Stars rating={review.rating} className="size-4" />
-            <ReviewTitle review={review} className="mt-3" />
-            <p className="mt-2 text-[0.95rem] leading-snug">“{review.body}”</p>
-            <ReviewByline review={review} className="mt-4" />
-            <ReviewReply review={review} />
-            <ReviewFooter review={review} />
-          </Card>
-        </li>
-      ))}
-    </ul>
+              ) : null}
+              <figure className="min-w-0 flex-1">
+                <span className="text-primary">
+                  <Stars rating={review.rating} className="size-3.5" />
+                </span>
+                <ReviewTitle review={review} className="mt-2 text-lg" />
+                <blockquote className="mt-2 font-heading text-lg leading-snug italic">
+                  “{review.body}”
+                </blockquote>
+                <figcaption className="mt-4">
+                  <ReviewByline review={review} />
+                  <ReviewReply review={review} />
+                  <ReviewFooter review={review} />
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </div>
   );
 }

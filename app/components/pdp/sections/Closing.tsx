@@ -1,3 +1,4 @@
+import { Eyebrow } from "~/components/brand/Eyebrow";
 import { PlaceholderTag } from "~/components/brand/PlaceholderTag";
 import { SectionHeading } from "~/components/brand/SectionHeading";
 import { ReviewCard } from "~/components/proof/ReviewCard";
@@ -33,7 +34,7 @@ export function Closing() {
 
         <GuaranteeBlock />
 
-        <ul className="mx-auto mt-14 grid max-w-6xl gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <ul className="mx-auto mt-14 grid max-w-6xl gap-x-10 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
           {stories.map((review, i) => (
             <li key={review.id} className="flex">
               <ReviewCard review={review} index={i} className="flex-1" />
@@ -51,18 +52,17 @@ export function Closing() {
         <SectionHeading align="center">{brand.pdp.faqHeadline}</SectionHeading>
         {groups.map(([category, items]) => (
           <div key={category} className="mt-10">
-            {/* Tomato is for large text only, so the category label uses Cobalt. */}
-            <h3 className="mb-2 font-heading text-base font-extrabold text-primary">
-              {category}
-            </h3>
+            <Eyebrow asChild className="mb-2 text-sm text-muted-foreground">
+              <h3>{category}</h3>
+            </Eyebrow>
             <Accordion type="single" collapsible>
               {items.map((item) => (
                 <AccordionItem
                   key={item.q}
                   value={item.q}
-                  className="border-b border-foreground/20"
+                  className="border-b border-border"
                 >
-                  <AccordionTrigger className="py-5 font-heading text-lg font-bold text-foreground hover:no-underline **:data-[slot=accordion-trigger-icon]:text-foreground">
+                  <AccordionTrigger className="py-5 font-heading text-lg font-normal text-foreground hover:no-underline **:data-[slot=accordion-trigger-icon]:text-foreground">
                     {item.q}
                   </AccordionTrigger>
                   <AccordionContent className="pb-5 text-[0.95rem] leading-relaxed text-muted-foreground">

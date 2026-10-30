@@ -99,7 +99,7 @@ export function RatingBadge({
         className,
       )}
     >
-      <span className={cn(!onDark && "text-highlight")}>
+      <span className={cn(!onDark && "text-primary")}>
         <RatingStars value={rating.average} className="size-4" />
       </span>
       {href ? (
@@ -139,16 +139,16 @@ export function RatingSummary({
     <div
       data-proof="rating"
       className={cn(
-        "grid gap-6 rounded-3xl border-2 bg-card p-5 text-card-foreground shadow-[6px_6px_0_0] shadow-foreground sm:grid-cols-[auto_minmax(12rem,1fr)] sm:items-center sm:gap-10 sm:p-7",
+        "grid gap-6 border-y border-border py-8 sm:grid-cols-[auto_minmax(12rem,1fr)] sm:items-center sm:gap-10",
         className,
       )}
     >
-      <div className="space-y-2">
-        <p className="font-heading text-7xl leading-none font-extrabold tracking-[-0.04em] tabular-nums">
+      <div className="space-y-2 sm:border-e sm:border-border sm:pe-10">
+        <p className="font-heading text-7xl leading-none font-normal tabular-nums">
           {rating.average.toFixed(1)}
           <span className="sr-only"> out of 5</span>
         </p>
-        <span className="text-highlight">
+        <span className="text-primary">
           <RatingStars value={rating.average} className="size-5" />
         </span>
         <p className="text-sm">
@@ -173,7 +173,7 @@ export function RatingSummary({
               <Progress
                 aria-hidden
                 value={(n / max) * 100}
-                className="h-3 flex-1 bg-foreground/10 *:data-[slot=progress-indicator]:rounded-full *:data-[slot=progress-indicator]:bg-highlight"
+                className="h-1.5 flex-1 rounded-none bg-foreground/10"
               />
               <span className="w-12 shrink-0 text-end text-sm tabular-nums opacity-75">
                 {count}
@@ -189,7 +189,7 @@ export function RatingSummary({
                   aria-label={`${stars} star reviews: ${count}. ${active ? "Show all reviews" : `Show only ${stars} star reviews`}`}
                   onClick={() => onSelect(active ? null : stars)}
                   className={cn(
-                    "h-11 w-full justify-start gap-3 rounded-full px-1.5 font-normal hover:bg-foreground/8 hover:text-card-foreground",
+                    "h-11 w-full justify-start gap-3 rounded-sm px-1.5 font-normal hover:bg-foreground/5 hover:text-current",
                     active && "bg-foreground/10 font-semibold",
                   )}
                 >

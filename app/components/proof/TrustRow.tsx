@@ -24,7 +24,7 @@ export function trustItems() {
     {
       icon: PackageCheckIcon,
       title: proof.warranty.title,
-      body: "Repair or replace if it fails",
+      body: "A new copy if it arrives damaged",
     },
     {
       icon: MessageCircleIcon,
@@ -34,22 +34,11 @@ export function trustItems() {
   ];
 }
 
-const STRIP_TONES = [
-  "bg-secondary text-secondary-foreground",
-  "bg-accent text-accent-foreground",
-  "bg-card text-card-foreground",
-];
-const BAND_TONES = [
-  "bg-secondary text-secondary-foreground",
-  "bg-accent text-accent-foreground",
-  "bg-highlight text-highlight-foreground",
-  "bg-card text-card-foreground",
-];
-
 /**
- * Shipping, guarantee, warranty and support, all proposed terms.
+ * Shipping, guarantee, warranty and support, all proposed terms, in
+ * Lamplight's quiet style: thin oxblood icons and hairline dividers.
  * - strip: one compact row (above the fold, item pages)
- * - band: four columns (homepage, product page)
+ * - band: four centred columns (homepage, product page)
  * - list: stacked (cart and checkout)
  */
 export function TrustRow({
@@ -68,49 +57,39 @@ export function TrustRow({
       <ul
         className={cn(
           variant === "strip" &&
-            "grid grid-cols-3 gap-2 text-center text-xs sm:text-sm",
+            "grid grid-cols-3 gap-2 divide-x divide-border text-center text-xs sm:text-sm",
           variant === "band" &&
             "grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4",
           variant === "list" && "space-y-3 text-sm",
         )}
       >
-        {items.map((item, i) => (
+        {items.map((item) => (
           <li
             key={item.title}
             className={cn(
               variant === "strip" &&
-                cn(
-                  "flex flex-col items-center gap-1.5 rounded-lg border-2 px-1 py-3",
-                  STRIP_TONES[i % STRIP_TONES.length],
-                ),
-              variant === "band" && "flex flex-col gap-3",
+                "flex flex-col items-center gap-1.5 px-1 py-3",
+              variant === "band" &&
+                "flex flex-col items-center gap-3 text-center",
               variant === "list" && "flex items-start gap-3",
             )}
           >
             <span
               className={cn(
                 "flex shrink-0 items-center justify-center",
-                variant === "band" &&
-                  cn(
-                    "size-12 rounded-full border-2",
-                    BAND_TONES[i % BAND_TONES.length],
-                  ),
+                variant === "band" && "size-12 text-primary",
               )}
             >
               <item.icon
                 aria-hidden
-                className={variant === "band" ? "size-6" : "size-5"}
+                className={cn(
+                  "stroke-[1.25]",
+                  variant === "band" ? "size-6" : "size-5",
+                )}
               />
             </span>
             <span className="min-w-0">
-              <span
-                className={cn(
-                  "block font-semibold",
-                  variant === "band" && "font-heading text-lg font-extrabold",
-                )}
-              >
-                {item.title}
-              </span>
+              <span className="block font-semibold">{item.title}</span>
               <span
                 className={cn(
                   "block",
@@ -128,10 +107,7 @@ export function TrustRow({
       <PlaceholderTag
         kind="tbc"
         label="Proposed shipping, guarantee and support terms"
-        className={cn(
-          "h-auto whitespace-normal",
-          variant === "band" ? "mt-6" : "mt-2",
-        )}
+        className={variant === "band" ? "mt-6" : "mt-2"}
       />
     </div>
   );

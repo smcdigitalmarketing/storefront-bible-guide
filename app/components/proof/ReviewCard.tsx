@@ -1,5 +1,4 @@
 import { Img } from "~/components/brand/Img";
-import { Card } from "~/components/ui/card";
 import type { Review } from "~/content/types";
 import { cn } from "~/lib/utils";
 
@@ -11,44 +10,47 @@ import {
   ReviewTitle,
 } from "./ReviewParts";
 
-/** A full review card in Flashpop's style: ink outline, offset shadow, a slight tilt. */
+/**
+ * A full review in Lamplight's style: an ink rule over the review, the words
+ * in the serif. It has no ground of its own, so it reads on Parchment or the
+ * card surface.
+ */
 export function ReviewCard({
   review,
-  index = 0,
   photo = true,
   className,
 }: {
   review: Review;
+  /** Its place in a list. Lamplight sets every review the same way. */
   index?: number;
   photo?: boolean;
   className?: string;
 }) {
   return (
-    <Card
+    <article
       data-review-card
       className={cn(
-        "gap-3 overflow-visible rounded-lg p-5 text-base shadow-[4px_4px_0_0] ring-2 shadow-foreground ring-foreground",
-        index % 2 ? "rotate-[0.6deg]" : "-rotate-[0.6deg]",
+        "flex flex-col gap-3 border-t border-foreground pt-6 text-base",
         className,
       )}
     >
       {photo && review.photo ? (
-        <div className="overflow-hidden rounded-sm">
-          <Img
-            image={review.photo}
-            sizes="(min-width: 768px) 30vw, 100vw"
-            className="aspect-[3/2] w-full object-cover"
-          />
-        </div>
+        <Img
+          image={review.photo}
+          sizes="(min-width: 768px) 30vw, 100vw"
+          className="aspect-[3/2] w-full object-cover"
+        />
       ) : null}
-      <span className="text-highlight">
+      <span className="text-primary">
         <Stars rating={review.rating} className="size-4" />
       </span>
       <ReviewTitle review={review} />
-      <p className="flex-1">“{review.body}”</p>
+      <p className="flex-1 font-heading text-lg leading-snug">
+        “{review.body}”
+      </p>
       <ReviewByline review={review} />
       <ReviewReply review={review} />
       <ReviewFooter review={review} className="mt-1" />
-    </Card>
+    </article>
   );
 }

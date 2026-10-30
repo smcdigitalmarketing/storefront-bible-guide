@@ -1,3 +1,4 @@
+import { Eyebrow } from "~/components/brand/Eyebrow";
 import { PlaceholderTag } from "~/components/brand/PlaceholderTag";
 import { brand } from "~/content/brand";
 import type { ContentStatus, Fact } from "~/content/types";
@@ -17,14 +18,15 @@ export function ProductDescription({
 
   return (
     <div data-block="description" className={cn("space-y-6", className)}>
-      <p className="text-lg leading-relaxed font-medium sm:text-xl">{lead}</p>
+      <p className="font-heading text-xl leading-relaxed sm:text-2xl">{lead}</p>
       {rest.map((p) => (
         <p key={p} className="leading-relaxed text-muted-foreground">
           {p}
         </p>
       ))}
-      <div className="rounded-3xl border-2 bg-secondary p-5 text-secondary-foreground">
-        <p className="mb-3 font-heading text-sm font-extrabold">At a glance</p>
+      {/* At a glance, between two hairlines. */}
+      <div className="border-y border-border py-5">
+        <Eyebrow className="mb-3 text-sm font-semibold">At a glance</Eyebrow>
         <dl className="grid grid-cols-[7.5rem_1fr] gap-x-4 gap-y-2 text-sm">
           {facts.map((f) => (
             <div key={f.label} className="contents">

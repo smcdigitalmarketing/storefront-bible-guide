@@ -1,5 +1,6 @@
 import { MessageCircleQuestionIcon } from "lucide-react";
 
+import { Eyebrow } from "~/components/brand/Eyebrow";
 import { PlaceholderTag } from "~/components/brand/PlaceholderTag";
 import { SectionHeading } from "~/components/brand/SectionHeading";
 import {
@@ -38,17 +39,17 @@ export function QnA() {
           <AccordionItem
             key={item.q}
             value={item.q}
-            className="mb-3 rounded-lg border-2 bg-card px-4 text-card-foreground not-last:border-b-2"
+            className="border-b border-border"
           >
-            <AccordionTrigger className="py-4 font-heading text-base font-bold text-card-foreground hover:no-underline **:data-[slot=accordion-trigger-icon]:text-card-foreground">
+            <AccordionTrigger className="py-4 font-heading text-lg font-normal text-foreground hover:no-underline **:data-[slot=accordion-trigger-icon]:text-foreground">
               <span className="flex gap-3">
                 <MessageCircleQuestionIcon
                   aria-hidden
-                  className="mt-0.5 size-5 shrink-0"
+                  className="mt-1 size-5 shrink-0 stroke-[1.25] text-primary"
                 />
                 <span>
                   {item.q}
-                  <span className="block text-xs font-normal text-muted-foreground">
+                  <span className="block font-sans text-xs font-normal text-muted-foreground">
                     Asked by {item.asker} ·{" "}
                     <time dateTime={item.date}>
                       {formatReviewDate(item.date)}
@@ -58,9 +59,9 @@ export function QnA() {
               </span>
             </AccordionTrigger>
             <AccordionContent className="ps-8 pb-5 text-[0.95rem] leading-relaxed [&_p:not(:last-child)]:mb-1">
-              <p className="mb-1 text-xs font-semibold">
+              <Eyebrow className="mb-1 font-semibold">
                 Answer from the {brand.name} team
-              </p>
+              </Eyebrow>
               <p className="text-muted-foreground">
                 {item.a}{" "}
                 {"status" in item && item.status === "tbc" ? (

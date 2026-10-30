@@ -4,20 +4,22 @@ import { RatingBadge } from "~/components/proof/Rating";
 import { Button } from "~/components/ui/button";
 import { brand } from "~/content/brand";
 import { fillProof } from "~/content/proof";
-import { cn } from "~/lib/utils";
 
-/** The last call to action: rating, offer recap and a button back to the buy box. */
+/**
+ * The last call to action on an ink panel: rating, offer recap and a
+ * parchment button back to the buy box.
+ */
 export function FinalCta() {
   const { finalCta } = brand.pdp;
 
   return (
     <div
       data-block="final-cta"
-      className="relative overflow-hidden bg-highlight px-4 py-16 text-highlight-foreground sm:px-6 sm:py-20"
+      className="bg-foreground px-4 py-16 text-background sm:px-6 sm:py-20"
     >
-      <div className="relative mx-auto flex max-w-3xl flex-col items-center gap-5 text-center">
+      <div className="mx-auto flex max-w-3xl flex-col items-center gap-5 text-center">
         <RatingBadge onDark className="justify-center" href="#reviews" />
-        <h2 className="font-heading text-4xl leading-[0.95] font-extrabold tracking-[-0.03em] text-balance sm:text-6xl">
+        <h2 className="font-heading text-4xl leading-tight font-normal text-balance sm:text-5xl">
           {finalCta.headline}
         </h2>
         <p className="max-w-xl text-lg opacity-90">
@@ -26,10 +28,7 @@ export function FinalCta() {
         {/* Back up to the buy box (#buy), as the mock does. */}
         <Button
           asChild
-          className={cn(
-            "h-auto min-h-14 gap-2 rounded-full border-2 border-border px-8 py-3 font-heading text-lg font-extrabold whitespace-normal",
-            "shadow-[4px_4px_0_0] shadow-foreground hover:bg-primary hover:shadow-[2px_2px_0_0]",
-          )}
+          className="h-auto min-h-12 gap-2 rounded-sm bg-background px-8 py-3 font-heading text-sm font-semibold tracking-[0.12em] whitespace-normal text-foreground uppercase hover:bg-primary hover:text-primary-foreground focus-visible:ring-background/60"
         >
           <a href="#buy">
             {finalCta.cta}

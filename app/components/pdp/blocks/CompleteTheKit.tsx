@@ -47,16 +47,16 @@ export function CompleteTheKit({
           return (
             <li
               key={item.id}
-              className="flex items-center gap-4 rounded-3xl border-2 bg-card p-3 text-card-foreground"
+              className="flex items-center gap-4 border-t border-border p-3 pt-5"
             >
               <Img
                 image={item.images[0]}
                 sizes="96px"
                 alt=""
-                className="size-20 shrink-0 rounded-lg object-cover sm:size-24"
+                className="size-20 shrink-0 bg-card object-cover sm:size-24"
               />
               <div className="min-w-0 flex-1 space-y-1">
-                <p className="leading-tight font-semibold">{name}</p>
+                <p className="font-heading text-lg leading-tight">{name}</p>
                 <p className="line-clamp-2 text-sm text-muted-foreground">
                   {blurb}
                 </p>
@@ -78,7 +78,9 @@ export function CompleteTheKit({
   );
 }
 
-const ADD_CLASS = "h-11 rounded-full border-2 border-border px-4 font-semibold";
+/** Gold small caps in a thin ink outline that fills with ink on hover. */
+const ADD_CLASS =
+  "h-11 rounded-sm border-foreground bg-transparent px-4 font-heading text-sm font-semibold tracking-[0.12em] text-highlight uppercase shadow-none hover:bg-foreground hover:text-background";
 
 /**
  * The quick add. With a variant id it adds one to the cart through Shopify's
@@ -101,6 +103,7 @@ function KitAdd({ name, variantId }: { name: string; variantId?: string }) {
     return (
       <>
         <Button
+          variant="outline"
           disabled
           aria-label={`Add ${name} to cart`}
           aria-describedby={tagId}
@@ -132,6 +135,7 @@ function KitAdd({ name, variantId }: { name: string; variantId?: string }) {
   return (
     <>
       <Button
+        variant="outline"
         onClick={add}
         disabled={adding}
         aria-label={`Add ${name} to cart`}

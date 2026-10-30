@@ -2,7 +2,12 @@ import type { ReactNode } from "react";
 
 import { cn } from "~/lib/utils";
 
-/** A section's eyebrow, heading and subheading in Flashpop's type style. */
+import { Eyebrow } from "./Eyebrow";
+
+/**
+ * A section's eyebrow, heading and subheading in Lamplight's type: gold small
+ * caps over a light serif heading, centred where the section is.
+ */
 export function SectionHeading({
   id,
   eyebrow,
@@ -18,7 +23,7 @@ export function SectionHeading({
   sub?: string;
   align?: "start" | "center";
   className?: string;
-  /** On a dark band: muted text uses opacity instead of the muted colour. */
+  /** On a dark band: the eyebrow is foil gold and muted text uses opacity. */
   onDark?: boolean;
 }) {
   return (
@@ -30,18 +35,13 @@ export function SectionHeading({
       )}
     >
       {eyebrow ? (
-        <p
-          className={cn(
-            "font-heading text-sm font-bold",
-            onDark ? "opacity-80" : "text-primary",
-          )}
-        >
+        <Eyebrow className={cn("text-sm", onDark && "text-foil")}>
           {eyebrow}
-        </p>
+        </Eyebrow>
       ) : null}
       <h2
         id={id}
-        className="font-heading text-4xl leading-[0.95] font-extrabold tracking-tight text-balance sm:text-5xl lg:text-6xl"
+        className="font-heading text-4xl leading-[1.08] font-normal text-balance sm:text-5xl"
       >
         {children}
       </h2>

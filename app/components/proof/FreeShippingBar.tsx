@@ -46,7 +46,7 @@ export function FreeShippingBar({ className }: { className?: string }) {
       <Progress
         value={progress}
         aria-label="Progress to free shipping"
-        className="bg-foreground/10 h-2 *:data-[slot=progress-indicator]:bg-highlight *:data-[slot=progress-indicator]:rounded-full"
+        className="h-1.5 rounded-none bg-foreground/10"
       />
     </div>
   );

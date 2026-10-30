@@ -1,6 +1,7 @@
 import { CornerDownRightIcon, ThumbsUpIcon } from "lucide-react";
 import { useState } from "react";
 
+import { Eyebrow } from "~/components/brand/Eyebrow";
 import { PlaceholderTag } from "~/components/brand/PlaceholderTag";
 import { Button } from "~/components/ui/button";
 import { brand } from "~/content/brand";
@@ -8,7 +9,7 @@ import { formatReviewDate } from "~/content/reviews";
 import type { Review } from "~/content/types";
 import { cn } from "~/lib/utils";
 
-/** "Duo · Bubblegum", in Flashpop's own names. */
+/** "Three guides · Walnut", in Lamplight's own names. */
 export function variantLabel(review: Review) {
   const { variant } = review;
   if (!variant) return null;
@@ -33,7 +34,10 @@ export function ReviewByline({
   const bought = variantLabel(review);
   return (
     <p className={cn("text-sm", className)}>
-      <span className="font-semibold">{review.name}</span>
+      {/* The reader's name in gold small caps. */}
+      <Eyebrow asChild className="font-semibold">
+        <span>{review.name}</span>
+      </Eyebrow>
       <span className="opacity-70">
         {" · "}
         <time dateTime={review.date}>{formatReviewDate(review.date)}</time>
@@ -55,7 +59,7 @@ export function ReviewTitle({
   return (
     <h3
       className={cn(
-        "font-heading text-xl leading-tight font-extrabold text-balance",
+        "font-heading text-xl leading-snug font-normal text-balance",
         className,
       )}
     >
@@ -96,7 +100,7 @@ export function ReviewFooter({
           variant="ghost"
           aria-pressed={voted}
           onClick={() => setVoted((v) => !v)}
-          className="ms-auto h-11 gap-1 rounded-full px-3 text-xs tabular-nums hover:bg-current/10 hover:text-current"
+          className="ms-auto h-11 gap-1 rounded-sm px-3 text-xs tabular-nums hover:bg-current/10 hover:text-current"
         >
           <ThumbsUpIcon
             aria-hidden

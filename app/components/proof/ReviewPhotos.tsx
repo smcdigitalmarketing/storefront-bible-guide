@@ -12,7 +12,6 @@ import {
 } from "~/components/ui/dialog";
 import { photoReviews } from "~/content/reviews";
 import type { Review } from "~/content/types";
-import { cn } from "~/lib/utils";
 
 import { Stars } from "./Rating";
 import {
@@ -32,14 +31,14 @@ export function ReviewPhotos({ className }: { className?: string }) {
   return (
     <div className={className}>
       <div className="mb-3 flex flex-wrap items-center gap-2">
-        <h3 className="font-heading text-lg font-extrabold">Customer photos</h3>
+        <h3 className="font-heading text-xl font-normal">Customer photos</h3>
         <PlaceholderTag
           kind="competitor"
           label="Photos from competitor reviews"
         />
       </div>
       <ul className="grid grid-cols-4 gap-2 sm:grid-cols-5 lg:grid-cols-9">
-        {photoReviews.map((item, i) => (
+        {photoReviews.map((item) => (
           <li key={item.id}>
             <Button
               variant="outline"
@@ -48,10 +47,7 @@ export function ReviewPhotos({ className }: { className?: string }) {
                 setOpen(true);
               }}
               aria-label={`Photo from ${item.name}'s review: ${item.title}`}
-              className={cn(
-                "group block aspect-square h-auto w-full overflow-hidden rounded-lg border-2 border-border bg-current/10 p-0 shadow-none hover:bg-current/10 focus-visible:ring-current/60",
-                i % 2 ? "rotate-1" : "-rotate-1",
-              )}
+              className="group block aspect-square h-auto w-full overflow-hidden rounded-sm border-0 bg-current/10 p-0 shadow-none hover:bg-current/10 focus-visible:ring-current/60"
             >
               <Img
                 image={item.photo!}
@@ -68,14 +64,14 @@ export function ReviewPhotos({ className }: { className?: string }) {
         <DialogContent
           aria-describedby={undefined}
           showCloseButton={false}
-          className="max-h-[90dvh] gap-0 overflow-y-auto rounded-3xl border-2 bg-background p-0 text-foreground ring-0 sm:max-w-3xl"
+          className="max-h-[90dvh] gap-0 overflow-y-auto rounded-sm bg-background p-0 text-foreground ring-1 ring-border sm:max-w-3xl"
         >
           {/* First in the DOM, so it takes the initial focus. */}
           <DialogClose asChild>
             <Button
               variant="outline"
               size="icon"
-              className="absolute top-3 right-3 z-10 size-11 rounded-full border-2"
+              className="absolute top-3 right-3 z-10 size-11 rounded-sm border-border bg-background"
             >
               <XIcon aria-hidden />
               <span className="sr-only">Close</span>
@@ -89,7 +85,7 @@ export function ReviewPhotos({ className }: { className?: string }) {
                 className="aspect-square w-full object-cover"
               />
               <div className="space-y-3 p-5 text-base sm:p-6">
-                <span className="text-highlight">
+                <span className="text-primary">
                   <Stars rating={review.rating} className="size-4" />
                 </span>
                 <DialogTitle asChild>
@@ -97,7 +93,9 @@ export function ReviewPhotos({ className }: { className?: string }) {
                     <ReviewTitle review={review} />
                   </div>
                 </DialogTitle>
-                <p>“{review.body}”</p>
+                <p className="font-heading text-lg leading-snug">
+                  “{review.body}”
+                </p>
                 <ReviewByline review={review} />
                 <ReviewReply review={review} />
                 <ReviewFooter review={review} />

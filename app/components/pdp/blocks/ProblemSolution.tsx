@@ -1,3 +1,4 @@
+import { DoubleRule } from "~/components/brand/DoubleRule";
 import { Img } from "~/components/brand/Img";
 import { PlaceholderTag } from "~/components/brand/PlaceholderTag";
 import { SectionHeading } from "~/components/brand/SectionHeading";
@@ -5,7 +6,10 @@ import { brand } from "~/content/brand";
 import { images } from "~/content/images";
 import { cn } from "~/lib/utils";
 
-/** "Why we made it": the problem the product answers, in the brand's voice. */
+/**
+ * "Why we made it": the problem the product answers, in the brand's voice,
+ * closed by a small double rule.
+ */
 export function ProblemSolution() {
   const { problem } = brand.pdp;
 
@@ -18,17 +22,16 @@ export function ProblemSolution() {
       )}
     >
       {problem.image ? (
-        // A tilted print, like a photo stuck on a bedroom wall.
-        <div className="relative max-w-md -rotate-2 justify-self-center bg-card p-2 pb-7 shadow-xl">
+        <div className="relative">
           <Img
             image={problem.image}
             sizes="(min-width: 1024px) 40vw, 100vw"
-            className="aspect-square w-full object-cover"
+            className="aspect-[4/3] w-full object-cover"
           />
           {images[problem.image].status === "competitor-original" ? (
             <PlaceholderTag
               kind="competitor"
-              className="absolute bottom-1 left-2"
+              className="absolute bottom-2 left-2 bg-background"
             />
           ) : null}
         </div>
@@ -50,12 +53,13 @@ export function ProblemSolution() {
             key={p}
             className={cn(
               "leading-relaxed",
-              i === 0 ? "text-lg" : "text-muted-foreground",
+              i === 0 ? "font-heading text-xl" : "text-muted-foreground",
             )}
           >
             {p}
           </p>
         ))}
+        <DoubleRule className={cn("w-24", !problem.image && "mx-auto")} />
       </div>
     </div>
   );
